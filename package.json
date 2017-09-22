@@ -1,6 +1,6 @@
 {
   "name": "x-do-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "常用的命令行",
   "main": "index.js",
   "scripts": {
@@ -20,13 +20,16 @@
     "vue",
     "scaffold"
   ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "author": "huixisheng@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/huixisheng/x-do-cli/issues"
   },
   "homepage": "https://github.com/huixisheng/x-do-cli#readme",
-  "devDependencies": {
+  "dependencies": {
     "commander": "^2.11.0",
     "fs-extra": "^4.0.2",
     "node-plus-string": "^1.0.1",
