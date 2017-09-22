@@ -6,6 +6,7 @@ const fs = require('fs');
 const fse = require('fs-extra');
 const plusString = require('node-plus-string');
 const generateViewRouter = require('../lib/view/index');
+const watch = require('watch');
 
 let componentName = null;
 const ROOT_PATH = process.cwd();
@@ -75,6 +76,24 @@ if (fs.existsSync(outputVueFilePath) && !program.force) {
   process.exit(1);
 }
 // @todo 文件是否存在
+
+watch.watchTree(path.join(ROOT_PATH, output), function (f, curr, prev) {
+  // console.log('curr', curr);
+  // console.log('prev', prev);
+  if (typeof f == "object" && prev === null && curr === null) {
+    // Finished walking the tree
+  } else if (prev === null) {
+    generateViewRouter(path.join(ROOT_PATH, output));
+    // f is a new file
+  } else if (curr.nlink === 0) {
+    generateViewRouter(path.join(ROOT_PATH, output));
+    // f was removed
+  } else {
+    generateViewRouter(path.join(ROOT_PATH, output));
+    // f was changed
+  }
+  // generateViewRouter(path.join(ROOT_PATH, output));
+});
 
 fse.outputFile(outputVueFilePath, tplViewContent, (error) => {
   if (error) {
