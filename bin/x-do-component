@@ -1,0 +1,88 @@
+#!/usr/bin/env node
+const program = require('commander');
+const logger = require('../lib/log');
+const path = require('path');
+const fs = require('fs');
+const fse = require('fs-extra');
+const plusString = require('node-plus-string');
+const generateComponentRouter = require('../lib/component/index');
+
+let componentName = null;
+const ROOT_PATH = process.cwd();
+
+program.on('--help', function () {
+  console.log(' Examples:');
+  console.log();
+  console.log('    $ x component card -o src/components -c group');
+});
+
+program
+  .usage('<component-name>')
+  .arguments('<component-name>')
+  .action((name) => {
+    componentName = name;
+  })
+  .option('-o, --output <output>', '输出的路径。默认为src/components')
+  // @todo -c 参数非必须
+  .option('-c, --component-cate <component-cate>', '页面组件的分类目录。必填参数')
+  // .option('-t, --template <template>', '使用的模板。默认为tempate/component.tpl')
+  .option('-f, --force', '是否强制覆盖')
+  .parse(process.argv);
+
+
+if (!componentName) {
+  logger.error('请输入组件。例: x-select|x-select.vue');
+  program.help();
+  process.exit(1);
+}
+
+
+// @todo 指定模板
+const tplViewPath = path.join(__dirname, '../template/component.tpl');
+const tplViewContent = fs.readFileSync(tplViewPath, 'utf-8');
+
+if (path.extname(componentName)) {
+  componentName = path.basename(componentName, '.vue');
+}
+
+let output = 'src/components';
+if (program.output) {
+  output = program.output;
+}
+let componentCate = '';
+
+if (program.componentCate) {
+  componentCate = program.componentCate;
+}
+
+const outputVueFilePath = path.join(ROOT_PATH, output, componentCate, componentName + '.vue');
+
+if (fs.existsSync(outputVueFilePath) && !program.force) {
+  console.error('组件已经存在');
+  process.exit(1);
+}
+
+
+fse.outputFile(outputVueFilePath, tplViewContent, (error) => {
+  if (error) {
+    logger.error(`写入${outputVueFilePath}失败`);
+    return;
+  }
+  generateComponentRouter(path.join(ROOT_PATH, output));
+
+});
+
+
+function getImportName() {
+  return plusString.classify(componentCate) + plusString.classify(componentName);
+}
+function getViewsPath(vueFilePath) {
+  return path.join(output.replace('src/', ''), componentCate, componentName);
+}
+
+// console.log(process.argv);
+// console.log(componentName);
+// console.log(program.output);
+// console.log(program.componentPath);
+// console.log(program.template);
+// console.log(program.force);

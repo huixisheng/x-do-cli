@@ -1,0 +1,36 @@
+{
+  "name": "x-do-cli",
+  "version": "0.0.1",
+  "description": "常用的命令行",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huixisheng/x-do-cli.git"
+  },
+  "bin": {
+    "x": "bin/x-do",
+    "x-view": "bin/x-do-view",
+    "x-component": "bin/x-do-component"
+  },
+  "keywords": [
+    "cli",
+    "vue",
+    "scaffold"
+  ],
+  "author": "huixisheng@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/huixisheng/x-do-cli/issues"
+  },
+  "homepage": "https://github.com/huixisheng/x-do-cli#readme",
+  "devDependencies": {
+    "commander": "^2.11.0",
+    "fs-extra": "^4.0.2",
+    "node-plus-string": "^1.0.1",
+    "nunjucks": "^3.0.1",
+    "walk-sync": "^0.3.2"
+  }
+}
