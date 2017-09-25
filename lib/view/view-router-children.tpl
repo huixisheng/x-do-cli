@@ -10,7 +10,7 @@ routerList.push({
   meta: {
     title: '{{ item.title }}',
   },
-  name: '{{ item.camelizeComponentName }}',
+  name: '{{ item.routerName }}',
   hidden: {{ item.hidden }},
 });
 {% endfor %}

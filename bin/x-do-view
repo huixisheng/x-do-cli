@@ -31,9 +31,11 @@ program
   .option('-f, --force', '是否强制覆盖')
   .parse(process.argv);
 
+let output = 'src/views';
 
 if (!componentName) {
   logger.error('请输入组件。例: x-select|x-select.vue');
+  generateViewRouter(path.join(ROOT_PATH, output));
   program.help();
   process.exit(1);
 }
@@ -54,7 +56,7 @@ if (path.extname(componentName)) {
   componentName = path.basename(componentName, '.vue');
 }
 
-let output = 'src/views';
+
 if (program.output) {
   output = program.output;
 }
@@ -72,6 +74,7 @@ const outputVueFilePath = path.join(ROOT_PATH, output, componentCate, componentN
 // }
 
 if (fs.existsSync(outputVueFilePath) && !program.force) {
+  generateViewRouter(path.join(ROOT_PATH, output));
   console.error('组件已经存在');
   process.exit(1);
 }

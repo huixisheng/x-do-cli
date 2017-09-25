@@ -1,6 +1,6 @@
 {
   "name": "x-do-cli",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "常用的命令行",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,10 @@
   "bin": {
     "x": "bin/x-do",
     "x-view": "bin/x-do-view",
-    "x-component": "bin/x-do-component"
+    "x-component": "bin/x-do-component",
+    "x-do": "bin/x-do",
+    "x-do-view": "bin/x-do-view",
+    "x-do-component": "bin/x-do-component"
   },
   "keywords": [
     "cli",
