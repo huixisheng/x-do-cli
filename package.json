@@ -1,6 +1,6 @@
 {
   "name": "x-do-cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "常用的命令行",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   "keywords": [
     "cli",
     "vue",
+    "x-do",
     "scaffold"
   ],
   "engines": {
@@ -37,6 +38,8 @@
     "fs-extra": "^4.0.2",
     "node-plus-string": "^1.0.1",
     "nunjucks": "^3.0.1",
+    "request": "^2.82.0",
+    "semver": "^5.4.1",
     "walk-sync": "^0.3.2",
     "watch": "^1.0.2"
   }

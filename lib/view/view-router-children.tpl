@@ -5,7 +5,7 @@
 const routerList = [];
 {% for item in list %}
 routerList.push({
-  path: '{{ item.name }}',
+  path: '{{ item.routerPath }}',
   component: {{ item.componentName }},
   meta: {
     title: '{{ item.title }}',
