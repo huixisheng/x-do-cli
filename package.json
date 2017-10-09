@@ -1,6 +1,6 @@
 {
   "name": "x-do-cli",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "常用的命令行",
   "main": "index.js",
   "scripts": {
@@ -40,7 +40,10 @@
     "nunjucks": "^3.0.1",
     "request": "^2.82.0",
     "semver": "^5.4.1",
+    "chalk": "^2.1.0",
     "walk-sync": "^0.3.2",
     "watch": "^1.0.2"
+  },
+  "devDependencies": {
   }
 }
