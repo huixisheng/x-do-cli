@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+const program = require('commander');
+const logger = require('../lib/log');
+const path = require('path');
+const fs = require('fs');
+const fse = require('fs-extra');
+const watch = require('watch');
+const checkVersion = require('../lib/check-version');
+
+const ROOT_PATH = process.cwd();
+const defaultTemplatePath = path.join(__dirname, '../lib/page/template');
+
+program.on('--help', function () {
+  console.log(' Examples:');
+  console.log();
+  console.log('    $ x-do page card');
+});
+
+program
+  .usage('<page-path>')
+  .arguments('<page-path>')
+  .action((name) => {
+    pagePath = name;
+  })
+  .option('-o, --output <output>', '输出的路径。默认为src/views')
+  // .option('-t, --template <template>', '使用的模板。默认为tempate/view.tpl')
+  .option('-f, --force', '是否强制覆盖')
+  .parse(process.argv);
+
+checkVersion(() => {
+  console.log();
+});
+
+let output = 'src/pages';
+
+if (!pagePath) {
+  logger.error('error');
+  program.help();
+  process.exit(1);
+}
+
+try {
+  fse.copy(defaultTemplatePath, path.join(output, pagePath));
+  console.log('生成页面成功');
+} catch (err) {
+  console.error(err);
+}

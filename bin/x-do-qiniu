@@ -1,0 +1,132 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+const qn = require('qn');
+const path = require('path');
+const fs = require('fs');
+const xConfig = require('x-config-deploy').getConfig();
+const walkSync = require('walk-sync');
+const eTag = require('../lib/qiniu/etag');
+const logger = require('../lib/log');
+
+
+const qiniuConfig = Object.assign(xConfig.qiniuConfig, {
+  bucket: 'deploy',
+  origin: 'http://p1.cosmeapp.com'
+});
+const qnClient  = qn.create(qiniuConfig);
+
+const ROOT_PATH = process.cwd();
+
+program.on('--help', function () {
+  console.log(' Examples:');
+  console.log();
+  console.log('    $ x-do -p src/ -t [hash/name] --output [image-json.json, image-json.js] --min');
+});
+
+program
+  // .usage('<component-name>')
+  // .arguments('<component-name>')
+  // .action((name) => {
+  //   componentName = name;
+  // })
+  .option('-o, --output <output>', '输出的路径。默认为src/components')
+  .parse(process.argv);
+
+if (!program.args.length) {
+  logger.error('请输入上传的地址');
+  program.help();
+  process.exit(1);
+}
+
+const uploadFiles = getFileList(program.args);
+const promises = uploadFiles.map((file) => {
+  return uploadFilePromise(file);
+});
+Promise.all(promises).then((result) => {
+  console.log('上传的文件: ');
+  console.log(result);
+}).catch(() => {
+
+});
+// uploadFiles.forEach((file) => {
+//   console.log(file);
+//   qnClient.upload(fs.createReadStream(file), (error, result) => {
+//     console.log(result);
+//   });
+// });
+
+function uploadFilePromise(file) {
+  var promise = new Promise((resolve, reject) => {
+    qnClient.upload(fs.createReadStream(file), (error, result) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(result);
+      // console.log(result);
+    });
+  });
+  return promise;
+}
+
+function getFileList(args) {
+ if (!Array.isArray(args)) {
+  if (fs.existsSync(args)) {
+    args = [args];
+  } else {
+    logger.error('参数有误');
+  }
+ }
+ let fileList = [];
+ args.forEach((value) => {
+    let projectPath = path.join(process.cwd(), value);
+    let walkfiles = [];
+    if (fs.statSync(projectPath).isFile()) {
+      walkfiles.push(projectPath);
+    } else {
+      walkfiles = walkSync(projectPath, {
+        directories: true,
+        ignore: ['.DS_Store', '*.exe', '*.dmg', '*.app'],
+        globs: ['**/*.js', '**/*.css', '**/*.html', '**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.gif', '**/*.svg']
+        // globs: ['**/*.(jpg|png|jpeg|gif|js|css|html)']
+      }).map((value) => {
+        return path.join(projectPath, value);
+      });
+    }
+    fileList = fileList.concat(walkfiles);
+ });
+
+ return fileList;
+}
+
+// console.log(program.args);
+// console.log(program.output);
+// console.log(ROOT_PATH);
+// console.log(uploadFiles);
+
+/*
+x-do-qiniu -p src/ -t [hash/name] --output [image-json.json, image-json.js] --min
+x-do-qiniu src
+
+
+.css,.js,.html
+
+.exe,.dmg
+
+.cache @todo
+
+.x-do
+  .cache
+    x-do-qiniu.json
+
+a.jpg -> http:com/xxx 45x46
+
+hash:
+{
+  'hash': '',
+  'name': '',
+  'width': '',
+  'height': ''
+}
+*/

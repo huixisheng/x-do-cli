@@ -34,16 +34,17 @@
   },
   "homepage": "https://github.com/huixisheng/x-do-cli#readme",
   "dependencies": {
+    "chalk": "^2.1.0",
     "commander": "^2.11.0",
     "fs-extra": "^4.0.2",
     "node-plus-string": "^1.0.1",
     "nunjucks": "^3.0.1",
+    "qn": "^1.3.0",
     "request": "^2.82.0",
     "semver": "^5.4.1",
-    "chalk": "^2.1.0",
     "walk-sync": "^0.3.2",
-    "watch": "^1.0.2"
+    "watch": "^1.0.2",
+    "x-config-deploy": "0.0.3"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
