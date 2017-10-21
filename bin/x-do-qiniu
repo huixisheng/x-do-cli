@@ -6,6 +6,9 @@ const path = require('path');
 const fs = require('fs');
 const xConfig = require('x-config-deploy').getConfig();
 const walkSync = require('walk-sync');
+// http://jo2.org/nodejs-copy-text-to-clipboard/
+// https://stackoverflow.com/questions/7778539/copy-to-clipboard-in-node-js
+const clipboardy = require('clipboardy');
 const eTag = require('../lib/qiniu/etag');
 const logger = require('../lib/log');
 
@@ -46,6 +49,7 @@ const promises = uploadFiles.map((file) => {
 Promise.all(promises).then((result) => {
   console.log('上传的文件: ');
   console.log(result);
+  clipboardy.writeSync(JSON.stringify(result));
 }).catch(() => {
 
 });

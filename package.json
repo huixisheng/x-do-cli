@@ -35,6 +35,7 @@
   "homepage": "https://github.com/huixisheng/x-do-cli#readme",
   "dependencies": {
     "chalk": "^2.1.0",
+    "clipboardy": "^1.1.4",
     "commander": "^2.11.0",
     "fs-extra": "^4.0.2",
     "node-plus-string": "^1.0.1",
