@@ -6,5 +6,7 @@ commander
   .version(require('../package').version)
   .usage('<command> [options]')
   .command('view', '创建入口的view模板')
-  .command('component', '创建组件')
+  .command('page', '创建多入口页面模板')
+  .command('qiniu', '上传图片到七牛')
+  .command('component', '创建Vue组件')
   .parse(process.argv);

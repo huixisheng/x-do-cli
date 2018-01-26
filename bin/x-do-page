@@ -16,15 +16,16 @@ program.on('--help', function () {
   console.log('    $ x-do page card');
 });
 
+let pagePath = '';
 program
   .usage('<page-path>')
   .arguments('<page-path>')
   .action((name) => {
     pagePath = name;
   })
-  .option('-o, --output <output>', '输出的路径。默认为src/views')
+  .option('-o, --output <output>', '输出的路径。默认为src/pages')
   // .option('-t, --template <template>', '使用的模板。默认为tempate/view.tpl')
-  .option('-f, --force', '是否强制覆盖')
+  // .option('-f, --force', '是否强制覆盖')
   .parse(process.argv);
 
 checkVersion(() => {
