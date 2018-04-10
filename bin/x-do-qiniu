@@ -31,6 +31,7 @@ program
   //   componentName = name;
   // })
   // .option('-o, --output <output>', '输出的路径。默认为src/components')
+  .option('-k, --key', '是否自定义上传七牛的key')
   .parse(process.argv);
 
 if (!program.args.length) {
@@ -40,8 +41,10 @@ if (!program.args.length) {
 }
 
 const uploadFiles = getFileList(program.args);
+const isCustomKey = program.key;
+
 const promises = uploadFiles.map((file) => {
-  return uploadFilePromise(file);
+  return uploadFilePromise(file, isCustomKey);
 });
 Promise.all(promises).then((result) => {
   console.log('上传的文件: ');
@@ -57,16 +60,29 @@ Promise.all(promises).then((result) => {
 //   });
 // });
 
-function uploadFilePromise(file) {
+function uploadFilePromise(file, isCustomKey) {
   var promise = new Promise((resolve, reject) => {
-    qnClient.upload(fs.createReadStream(file), (error, result) => {
+    const params = {
+      key: file.replace(ROOT_PATH, ''),
+      insertOnly: 0,
+    };
+    if (!isCustomKey) {
+      delete params.key;
+    }
+    qnClient.uploadFile(file, params, (error, result) => {
       if (error) {
         reject(error);
         return;
       }
       resolve(result);
-      // console.log(result);
     });
+    // qnClient.upload(fs.createReadStream(file), (error, result) => {
+    //   if (error) {
+    //     reject(error);
+    //     return;
+    //   }
+    //   resolve(result);
+    // });
   });
   return promise;
 }
@@ -90,19 +106,21 @@ function getFileList(args) {
     }
 
     let walkfiles = [];
-    if (fs.statSync(projectPath).isFile()) {
-      walkfiles.push(projectPath);
-    } else {
-      walkfiles = walkSync(projectPath, {
-        directories: true,
-        ignore: ['.DS_Store', '*.exe', '*.dmg', '*.app'],
-        globs: ['**/*.js', '**/*.css', '**/*.html', '**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.gif', '**/*.svg']
-        // globs: ['**/*.(jpg|png|jpeg|gif|js|css|html)']
-      }).map((value) => {
-        return path.join(projectPath, value);
-      });
+    if (fs.existsSync(projectPath)) {
+      if (fs.statSync(projectPath).isFile()) {
+        walkfiles.push(projectPath);
+      } else {
+        walkfiles = walkSync(projectPath, {
+          directories: true,
+          ignore: ['.DS_Store', '*.exe', '*.dmg', '*.app'],
+          globs: ['**/*.js', '**/*.css', '**/*.html', '**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.gif', '**/*.svg']
+          // globs: ['**/*.(jpg|png|jpeg|gif|js|css|html)']
+        }).map((value) => {
+          return path.join(projectPath, value);
+        });
+      }
+      fileList = fileList.concat(walkfiles);
     }
-    fileList = fileList.concat(walkfiles);
  });
 
  return fileList;

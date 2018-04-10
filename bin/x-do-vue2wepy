@@ -1,0 +1,69 @@
+#!/usr/bin/env node
+const program = require('commander');
+const logger = require('../lib/log');
+const path = require('path');
+const fs = require('fs');
+const fse = require('fs-extra');
+const watch = require('watch');
+const checkVersion = require('../lib/check-version');
+const VueParse = require('../lib/vue2wpy');
+
+const ROOT_PATH = process.cwd();
+
+program.on('--help', function () {
+  console.log(' Examples:');
+  console.log();
+  console.log('    $ x-do vue2wepy sourcefile distfile');
+});
+
+let pagePath = '';
+program
+  .option('-v, --vue <path>', 'vue文件路径')
+  .option('-w, --wpy <path>', 'wpy文件路径')
+  .parse(process.argv);
+
+checkVersion(() => {
+  console.log();
+});
+
+// console.log('process.argv', process.argv);
+// console.log('program.args', program.args);
+console.log('program.vue', program.vue);
+console.log('program.wpy', program.wpy);
+
+if (!program.vue || !program.wpy) {
+  program.help();
+  process.exit(1);
+}
+
+if (!fs.existsSync(program.vue)) {
+  console.log('vue文件不存在');
+  process.exit(1);
+}
+
+const instanceVueParse = new VueParse(program.vue);
+const wxml = instanceVueParse.getWxml();
+const content = fs.readFileSync(program.vue).toString();
+// TODO es6 米有转换
+// const html2json = require('html2wxml/src/html2json');
+// console.log(html2json(fs.readFileSync(program.vue)));
+
+// 需要自己遍历转换
+// const { html2json } = require('html-to-wxml');
+// console.log(html2json(content));
+
+// class为空报错
+// const { html2wxml } = require('htmltowxml');
+// console.log(html2wxml(content));
+
+//正则替换 https://github.com/timezhong/html2wxml/blob/master/js/index.js
+
+// https://github.com/o2team/html-to-wxapp
+
+try {
+  console.log('wxml', wxml);
+  // fse.copy(defaultTemplatePath, path.join(output, pagePath));
+  console.log('生成页面成功');
+} catch (err) {
+  console.error(err);
+}

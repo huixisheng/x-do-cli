@@ -9,4 +9,5 @@ commander
   .command('page', '创建多入口页面模板')
   .command('qiniu', '上传图片到七牛')
   .command('component', '创建Vue组件')
+  .command('vue2wepy', 'vue文件转wepy')
   .parse(process.argv);
