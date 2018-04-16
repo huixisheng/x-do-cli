@@ -2,6 +2,14 @@ const glob = require('glob');
 const path = require('path');
 const fs = require('fs');
 
+function isObject(o) {
+  return Object.prototype.toString.call(o) === '[object Object]';
+}
+
+function isFunction(o) {
+  return Object.prototype.toString.call(o) === '[object Function]';
+}
+
 function getEntries (pattern, baseDir) {
   const entries = {};
   let pathname;
@@ -13,7 +21,6 @@ function getEntries (pattern, baseDir) {
   }
 
   arrayPattern.forEach((globPattern) => {
-    console.log(globPattern);
     glob.sync(globPattern).forEach(function (entry) {
       // entry: ./test/pages/mod1/index.js
       // path.resolve /Users/huixisheng/x/x-do-cli/packages/webpack-entry/test/pages/mod1/index.js
@@ -23,7 +30,7 @@ function getEntries (pattern, baseDir) {
       // console.log('path.normalize', path.normalize(entry));
       if (baseDir && entry.indexOf(baseDir) >= 0) {
         pathname = entry.split(baseDir)[1];
-        pathname = path.dirname(pathname);
+        pathname = pathname.replace(path.extname(pathname), '');
       } else {
         pathname = entry.replace(path.extname(entry), '');
       }
@@ -32,7 +39,6 @@ function getEntries (pattern, baseDir) {
       entries[pathname] = entry;
     });
   });
-  console.log('entries', entries);
   return entries;
 };
 
@@ -49,7 +55,6 @@ function getEntriesHtml(pattern, baseDir, options) {
   for (let page in pages) {
     const chunk = page;
     const template = pages[page].replace(path.extname(pages[page]), '.html');
-    console.log(template);
     let conf = {
       filename: page + '.html',
       // template,
@@ -67,16 +72,21 @@ function getEntriesHtml(pattern, baseDir, options) {
         // https://github.com/kangax/html-minifier#options-quick-reference
       };
       conf.chunksSortMode = 'dependency';
-      conf.filename = page + '-debug.html';
+      conf.filename = page + '.html';
     }
-    if (options && options.htmlWebpackPlugin) {
+    if (options && isObject(options.htmlWebpackPlugin)) {
       conf = Object.assign(conf, options.htmlWebpackPlugin);
+    } else if (options && isFunction(options.htmlWebpackPlugin)) {
+      conf = Object.assign(conf, options.htmlWebpackPlugin(conf));
     }
-    // TODO chunks template处理传参
-    if (fs.existsSync(template)) {
-      conf.template = template;
+    if (options && options.template) {
+      conf.template = options.template;
     } else {
-      conf.template = 'index.html';
+      if (fs.existsSync(template)) {
+        conf.template = template;
+      } else {
+        conf.template = 'index.html';
+      }
     }
     list.push(conf);
   }
