@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+const program = require('commander');
+const path = require('path');
+const signale = require('signale');
+const fs = require('fs');
+const fse = require('fs-extra');
+
+signale.config({
+  displayFilename: false,
+  displayTimestamp: true,
+  displayDate: false,
+});
+
+const ROOT_PATH = process.cwd();
+
+let snippetName = null;
+program.on('--help', function () {
+  console.log(' Examples:');
+  console.log();
+  console.log('    $ x-do-snippet name');
+});
+
+program
+  .usage('<snippet-name>')
+  .arguments('<snippet-name>')
+  .action((name) => {
+    snippetName = name;
+  })
+  .option('-e, --ext <ext>', '代码片段的后缀')
+  .parse(process.argv);
+
+
+if (!snippetName) {
+  signale.error('请输入要创建的snippet。例: demo|page|component');
+  program.help();
+  process.exit(1);
+}
+
+const ext = program.ext || 'js';
+const snippetTemplateConfigPath = path.join(__dirname, '../template/snippet/config.js');
+const snippetConfigPath = path.join(process.cwd(), snippetName, 'config.js');
+const snippetTplPath = path.join(process.cwd(), snippetName, 'tpl.' + ext);
+
+try {
+  if (!fs.existsSync(snippetConfigPath)) {
+    fse.copySync(snippetTemplateConfigPath, snippetConfigPath);
+    signale.success(`写入${snippetConfigPath}文件成功`);
+  } else {
+    signale.info(`${snippetConfigPath}存在`);
+  }
+  if (!fs.existsSync(snippetTplPath)) {
+    fse.outputFileSync(snippetTplPath, '');
+    signale.success(`写入${snippetTplPath}文件成功`);
+  } else {
+    signale.info(`${snippetTplPath}存在`);
+  }
+} catch (e) {
+  signale.fatal(e);
+}
+
+if (process.env.NODE_ENV === 'dev') {
+  console.log(program.ext);
+  console.log(process.cwd());
+  console.log(__dirname);
+}
