@@ -20,6 +20,7 @@
     "x-do-view": "bin/x-do-view",
     "x-do-component": "bin/x-do-component",
     "x-do-page": "bin/x-do-page",
+    "x-do-snippet": "bin/x-do-snippet",
     "x-do-qiniu": "bin/x-do-qiniu"
   },
   "keywords": [
@@ -38,7 +39,6 @@
   },
   "homepage": "https://github.com/huixisheng/x-do-cli#readme",
   "dependencies": {
-    "chalk": "^2.1.0",
     "clipboardy": "^1.1.4",
     "commander": "^2.11.0",
     "fs-extra": "^4.0.2",
@@ -57,5 +57,9 @@
     "watch": "^1.0.2",
     "x-config-deploy": "0.0.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chalk": "^2.4.1",
+    "signale": "^1.2.1",
+    "terminal-link": "^1.1.0"
+  }
 }

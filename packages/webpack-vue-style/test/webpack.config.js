@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const webpackConfig = require('@x-scaffold/webpack-vue-style');
+const webpackVueStyle = require('@x-scaffold/webpack-vue-style');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const IP = require('ip').address();
 
@@ -21,7 +21,7 @@ module.exports = {
     filename: 'js/[name].[hash:8].js',
   },
   module: {
-    rules: webpackConfig.styleLoaders({
+    rules: webpackVueStyle.styleLoaders({
       sourceMap: false,
       extract: isProduction,
     }).concat([
@@ -39,7 +39,7 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: webpackConfig.loaders,
+          loaders: webpackVueStyle.loaders,
           // extractCSS: true,
           // cssSourceMap: false,
           // other vue-loader options go here

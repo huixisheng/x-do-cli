@@ -2,6 +2,11 @@
 常用的命令行
 
 
+## 调试模式 ##
+```
+npm link 或者觉得地址/Users/huixisheng/x/x-do-cli/bin/x-do-component
+```
+
 ## 库 ##
 
 - https://github.com/skyFi/html2wxml
