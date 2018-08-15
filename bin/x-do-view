@@ -25,7 +25,7 @@ program
   .action((name) => {
     componentName = name;
   })
-  .option('-o, --output <output>', '输出的路径。默认为src/views')
+  .option('-o, --output <output>', '输出的路径。默认为src/[pages|views]')
   // @todo -c 参数非必须
   .option('-c, --component-cate <component-cate>', '页面组件的分类目录')
   // .option('-t, --template <template>', '使用的模板。默认为tempate/view.tpl')
@@ -37,9 +37,13 @@ checkVersion(() => {
 });
 
 let output = 'src/views';
+// 支持ice的目录的规范
+if (!fs.existsSync(path.join(process.cwd(), output))) {
+  output = 'src/pages';
+}
 
 if (!componentName) {
-  logger.error('请输入组件。例: x-select|x-select.vue');
+  logger.error('请输入页面组件名。例: x-select|x-select.vue');
   generateViewRouter(path.join(ROOT_PATH, output));
   program.help();
   process.exit(1);
@@ -60,7 +64,6 @@ const tplViewContent = fs.readFileSync(tplViewPath, 'utf-8');
 if (path.extname(componentName)) {
   componentName = path.basename(componentName, '.vue');
 }
-
 
 if (program.output) {
   output = program.output;
