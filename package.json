@@ -1,6 +1,6 @@
 {
   "name": "x-do-cli",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "常用的命令行",
   "main": "index.js",
   "scripts": {
