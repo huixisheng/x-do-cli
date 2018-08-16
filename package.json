@@ -39,6 +39,8 @@
   },
   "homepage": "https://github.com/huixisheng/x-do-cli#readme",
   "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "clipboardy": "^1.1.4",
     "commander": "^2.11.0",
     "fs-extra": "^4.0.2",
@@ -51,6 +53,7 @@
     "request": "^2.82.0",
     "semver": "^5.4.1",
     "towxml": "^1.5.2",
+    "vue-parser": "^1.1.6",
     "vue-template-compiler": "^2.5.16",
     "vue2mina": "^0.2.0",
     "walk-sync": "^0.3.2",
