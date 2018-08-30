@@ -1,6 +1,6 @@
 {
   "name": "@x-scaffold/webpack-entry",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "获取webpack多入口对象",
   "main": "index.js",
   "scripts": {

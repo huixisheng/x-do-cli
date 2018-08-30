@@ -10,10 +10,14 @@ function isFunction(o) {
   return Object.prototype.toString.call(o) === '[object Function]';
 }
 
-function getEntries (pattern, baseDir) {
+function getEntries(pattern, options = {}) {
   const entries = {};
   let pathname;
   let arrayPattern = [];
+  let baseDir = options;
+  if (isObject(options) && options.cwd) {
+    baseDir = options.cwd;
+  }
   if (Array.isArray(pattern)) {
     arrayPattern = arrayPattern.concat(pattern);
   } else {
@@ -21,38 +25,44 @@ function getEntries (pattern, baseDir) {
   }
 
   arrayPattern.forEach((globPattern) => {
-    glob.sync(globPattern).forEach(function (entry) {
+    glob.sync(globPattern, options).forEach((entry) => {
       // entry: ./test/pages/mod1/index.js
       // path.resolve /Users/huixisheng/x/x-do-cli/packages/webpack-entry/test/pages/mod1/index.js
       // path.normalize test/pages/mod1/index.js
       // console.log('entry:', entry);
       // console.log('path.resolve', path.resolve(entry));
       // console.log('path.normalize', path.normalize(entry));
+      let entryValue;
       if (baseDir && entry.indexOf(baseDir) >= 0) {
-        pathname = entry.split(baseDir)[1];
-        pathname = pathname.replace(path.extname(pathname), '');
+        entryValue = path.resolve(entry).replace(path.resolve(baseDir), '');
       } else {
-        pathname = entry.replace(path.extname(entry), '');
+        entryValue = path.resolve(entry).replace(process.cwd(), '');
       }
-      pathname = path.normalize(pathname);
+      pathname = entryValue.replace(path.extname(entry), '').replace(/^\//, '');
+      // if (baseDir && entry.indexOf(baseDir) >= 0) {
+      //   pathname = entry.split(baseDir)[1];
+      //   pathname = pathname.replace(path.extname(pathname), '');
+      // } else {
+      //   pathname = entry.replace(path.extname(entry), '');
+      // }
+      // pathname = path.normalize(pathname);
       // TODO 核对重复的内容
       entries[pathname] = entry;
     });
   });
   return entries;
-};
-
-// console.log(process.cwd());
-
-function getEntriesJs(pattern, baseDir, options) {
-  return getEntries(pattern, baseDir);
 }
 
-function getEntriesHtml(pattern, baseDir, options) {
-  const pages = getEntries(pattern, baseDir);
+function getEntriesJs(pattern, options) {
+  return getEntries(pattern, options);
+}
+
+function getEntriesHtml(pattern, options, htmlOptions) {
+  const pages = getEntries(pattern, options);
   // process.env.NODE_ENV === 'production'
   const list = [];
-  for (let page in pages) {
+  // eslint-disable-next-line
+  for (const page in pages) {
     const chunk = page;
     const template = pages[page].replace(path.extname(pages[page]), '.html');
     let conf = {
@@ -63,24 +73,24 @@ function getEntriesHtml(pattern, baseDir, options) {
       chunks: ['vendor', 'manifest', chunk],
       // excludeChunks: Object.keys(pages).filter(item => (item !== page)),
     };
-    if (process.env.NODE_ENV === 'production' || (options && options.mode === 'production')) {
+    if (process.env.NODE_ENV === 'production' || (htmlOptions && htmlOptions.mode === 'production')) {
       conf.minify = {
         removeComments: true,
         collapseWhitespace: true,
         removeAttributeQuotes: true,
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
+        // more htmlOptions:
+        // https://github.com/kangax/html-minifier#htmlOptions-quick-reference
       };
       conf.chunksSortMode = 'dependency';
       conf.filename = page + '.html';
     }
-    if (options && isObject(options.htmlWebpackPlugin)) {
-      conf = Object.assign(conf, options.htmlWebpackPlugin);
-    } else if (options && isFunction(options.htmlWebpackPlugin)) {
-      conf = Object.assign(conf, options.htmlWebpackPlugin(conf));
+    if (htmlOptions && isObject(htmlOptions.htmlWebpackPlugin)) {
+      conf = Object.assign(conf, htmlOptions.htmlWebpackPlugin);
+    } else if (htmlOptions && isFunction(htmlOptions.htmlWebpackPlugin)) {
+      conf = Object.assign(conf, htmlOptions.htmlWebpackPlugin(conf));
     }
-    if (options && options.template) {
-      conf.template = options.template;
+    if (htmlOptions && htmlOptions.template) {
+      conf.template = htmlOptions.template;
     } else {
       if (fs.existsSync(template)) {
         conf.template = template;
@@ -97,4 +107,4 @@ module.exports = {
   getEntries,
   getEntriesJs,
   getEntriesHtml,
-}
+};

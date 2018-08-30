@@ -1,29 +1,26 @@
 const { expect } = require('chai');
-const { getEntries, getEntriesHtml, getEntriesJs } = require('../index');
+const { getEntriesHtml } = require('..');
+// const path = require('path');
+
 const {
-  expectEntryJs,
   expectEntryHtml,
   expectEntryHtmlProduct,
   expectEntryHtmlWithOptions,
   expectEntryHtmlTemplate,
 } = require('./fixtures/expect');
 
-describe('入口列表', function () {
-  it('getEntries', function () {
-    const result = getEntries(['./test/pages/**/*.js', './test/src/main.js'], './test/pages/');
-    expect(result).to.be.deep.equal(expectEntryJs);
-  });
-
-  it('getEntriesJs', function () {
-    const result = getEntriesJs(['./test/pages/**/*.js', './test/src/main.js'], './test/pages/');
-    const expectResult = {
-      'mod1/index': './test/pages/mod1/index.js',
-      'mod1/mod1-1/main': './test/pages/mod1/mod1-1/main.js',
-      'mod2/main': './test/pages/mod2/main.js',
-      'test/src/main': './test/src/main.js',
-    };
-    expect(result).to.be.deep.equal(expectResult);
-  });
+describe('getEntriesHtml', function () {
+  // https://github.com/isaacs/node-glob/blob/master/test/cwd-test.js
+  // it('getEntriesJs options', function () {
+  //   const result = getEntriesJs(['./test/pages/**/*.js', './test/src/main.js'], { cwd: './test/pages/' });
+  //   const expectResult = {
+  //     'mod1/index': './test/pages/mod1/index.js',
+  //     'mod1/mod1-1/main': './test/pages/mod1/mod1-1/main.js',
+  //     'mod2/main': './test/pages/mod2/main.js',
+  //     'test/src/main': './test/src/main.js',
+  //   };
+  //   expect(result).to.be.deep.equal(expectResult);
+  // });
 
   it('getEntriesHtml', function () {
     const result = getEntriesHtml(['./test/pages/**/*.js', './test/src/main.js'], './test/pages/');
