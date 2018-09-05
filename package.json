@@ -1,6 +1,6 @@
 {
   "name": "x-do-cli",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "常用的命令行",
   "main": "index.js",
   "scripts": {
@@ -11,12 +11,7 @@
     "url": "git+https://github.com/huixisheng/x-do-cli.git"
   },
   "bin": {
-    "x": "bin/x-do",
     "x-do": "bin/x-do",
-    "x-view": "bin/x-do-view",
-    "x-component": "bin/x-do-component",
-    "x-page": "bin/x-do-page",
-    "x-qiniu": "bin/x-do-qiniu",
     "x-do-view": "bin/x-do-view",
     "x-do-component": "bin/x-do-component",
     "x-do-page": "bin/x-do-page",

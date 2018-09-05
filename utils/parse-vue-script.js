@@ -15,7 +15,7 @@ class ParseVueScript {
     const scriptContent = vueParser.parse(this.vueFileContent, 'script', { });
     // debuglog('scriptContent\n', scriptContent);
     // debuglog( scriptContent.match(/(\w*)export/img));
-    return 'export default' + scriptContent.split('export default')[1].replace(/components\:[\s\S]*?},/img, '');
+    return 'export default' + scriptContent.split('export default')[1].replace(/components\:\s*{[\s\S]*?},/img, '').replace(/mixins\:\s*\[[\s\S]*?\],/img, '');
   }
 
   babelParse(code) {
