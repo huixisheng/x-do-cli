@@ -9,5 +9,5 @@ const vueScriptObject = parseVueScriptInstance.getScriptObject();
 // DEBUG="*" node tests/vue-parse/index.js
 // DEBUG="ParseVueScript,-not_this" node tests/vue-parse/index.js
 console.log('vueScriptObject.data');
-console.dir( vueScriptObject.data());
+console.dir(vueScriptObject.data());
 console.log('vueScriptObject.title', vueScriptObject.title);

@@ -1,0 +1,6 @@
+src/
+node_modules/
+dist/
+*.vue
+lib/qiniu/etag.js
+lib/page/template/

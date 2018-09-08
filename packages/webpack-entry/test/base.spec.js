@@ -1,6 +1,7 @@
 const { expect } = require('chai');
-const { getEntries } = require('../index');
 const path = require('path');
+
+const { getEntries } = require('../index');
 
 const { expectEntryJs } = require('./fixtures/expect');
 

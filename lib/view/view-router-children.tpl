@@ -1,4 +1,4 @@
-/* 使用x-do-view自动生成，修改会被覆盖 */
+/* generate by x-do-view */
 {% for item in list %}const {{ item.componentName }} = () => import('{{ item.componentPath }}');
 {% endfor %}
 const routerList = [];
@@ -13,5 +13,4 @@ routerList.push({
   hidden: {{ item.hidden }},
 });
 {% endfor %}
-
 export default routerList;

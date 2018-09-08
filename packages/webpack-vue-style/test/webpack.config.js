@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpackVueStyle = require('@x-scaffold/webpack-vue-style');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const IP = require('ip').address();
@@ -32,8 +32,8 @@ module.exports = {
         include: [path.resolve('src')],
         exclude: /node_modules/,
         options: {
-          formatter: require('eslint-friendly-formatter')
-        }
+          formatter: require('eslint-friendly-formatter'),
+        },
       },
       {
         test: /\.vue$/,
@@ -43,38 +43,38 @@ module.exports = {
           // extractCSS: true,
           // cssSourceMap: false,
           // other vue-loader options go here
-        }
+        },
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
         options: {
-          name: 'assets/[name].[ext]?[hash]'
-        }
-      }
-    ])
+          name: 'assets/[name].[ext]?[hash]',
+        },
+      },
+    ]),
   },
   resolve: {
     modules: [
       path.resolve('src'),
-      path.resolve('node_modules')
+      path.resolve('node_modules'),
     ],
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
+      vue$: 'vue/dist/vue.esm.js',
       src: resolve('src'),
       views: resolve('src/views'),
       components: resolve('src/components'),
       assets: resolve('src/assets'),
-    }
+    },
   },
   performance: {
-    hints: false
+    hints: false,
   },
   // devtool: '#eval-source-map',
   plugins: [
@@ -96,7 +96,7 @@ module.exports = {
       showErrors: true,
       hash: true,
       inject: true,
-      chunksSortMode: 'dependency'
+      chunksSortMode: 'dependency',
     }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
@@ -105,25 +105,25 @@ module.exports = {
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks (module) {
+      minChunks(module) {
         // any required modules inside node_modules are extracted to vendor
         return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
+          module.resource
+          && /\.js$/.test(module.resource)
+          && module.resource.indexOf(
+            path.join(__dirname, '../node_modules'),
           ) === 0
-        )
-      }
+        );
+      },
     }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
-      minChunks: Infinity
+      minChunks: Infinity,
     }),
   ],
-}
+};
 if (!isProduction) {
   module.exports.devtool = '#eval-source-map';
   module.exports.devServer = {
@@ -131,6 +131,6 @@ if (!isProduction) {
     hot: false,
     open: true,
     historyApiFallback: true,
-    noInfo: true
+    noInfo: true,
   };
 }

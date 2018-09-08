@@ -1,28 +1,43 @@
-<style>
-</style>
-
 <template>
-  <div>
-    {{ msg }}
-  </div>
+<div>
+
+</div>
 </template>
 
 <script>
-
 export default {
+  // mixins: [],
+
+  components: {},
+
   data() {
     return {
-      msg: 'Hello x-page',
+
     };
   },
-  methods: {
+
+  computed: {
 
   },
+
   created() {
 
   },
+
   mounted() {
 
   },
+
+  activated() {
+
+  },
+
+  methods: {
+
+  },
 };
+
 </script>
+<style lang="less" scoped>
+
+</style>
