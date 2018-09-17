@@ -40,6 +40,10 @@ if (!pagePath) {
   process.exit(1);
 }
 
+if (program.output) {
+  output = program.output;
+}
+
 try {
   fse.copy(defaultTemplatePath, path.join(output, pagePath));
   console.log('生成页面成功');

@@ -68,3 +68,15 @@ console.log(_.dasherize('margin2-top'));
 console.log(_.dasherize('margin2Top'));
 console.log(_.dasherize('some_class2_name'));
 console.log(_.dasherize('Margin2Top'));
+
+
+function firstLowerCase(str) {
+  return str.toString()[0].toLowerCase() + str.toString().slice(1);
+}
+
+console.log('firstLowerCase');
+console.log(firstLowerCase('Abc'));
+console.log(firstLowerCase('ABC'));
+console.log(firstLowerCase('abc'));
+console.log(firstLowerCase('abcAbc'));
+console.log(firstLowerCase('1Abc'));
