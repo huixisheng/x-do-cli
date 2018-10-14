@@ -1,0 +1,19 @@
+{
+  "name": "@x-scaffold/webpack-manifest-deploy",
+  "version": "0.0.2",
+  "description": "用于manifest.json的构建",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ykq@cosmeapp.com",
+  "license": "ISC",
+  "dependencies": {
+    "dateformat": "^3.0.2",
+    "debug": "^4.1.0",
+    "fs-extra": "^5.0.0",
+    "git-rev-sync": "^1.9.1",
+    "request": "^2.83.0",
+    "x-config-deploy": "^0.0.6"
+  }
+}
