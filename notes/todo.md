@@ -1,3 +1,11 @@
+## 库 ##
+
+- https://github.com/skyFi/html2wxml
+- https://npms.io/search?q=wxml
+- https://github.com/Kali-Hac/wxml2json
+- https://tw.saowen.com/a/e2318aee024a20ffa191b7ee69dad990dc377dddb40c6934b5d3cab39cfc7161
+
+
 ```
 ERROR in ../node_modules/extract-text-webpack-plugin/dist/loader.js?{"omit":1,"remove":true}!./node_modules/vue-style-loader!../node_modules/css-loader?{"minimize":true,"sourceMap":false}!./node_modules/vue-loader/lib/style-compiler?{"optionsId":"0","vue":true,"scoped":false,"sourceMap":false}!../node_modules/postcss-loader/lib?{"sourceMap":false}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./src/App.vue
 Module build failed: Error: "extract-text-webpack-plugin" loader is used without the corresponding plugin, refer to https://github.com/webpack/extract-text-webpack-plugin for the usage example

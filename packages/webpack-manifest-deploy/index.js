@@ -47,7 +47,7 @@ function requestAssets(params, fileName) {
       form,
     }, (err, httpResponse, body) => {
       if (err) {
-        return reject(err);
+        reject(err);
       }
       debugLog('request.post body', body);
       try {
@@ -58,12 +58,11 @@ function requestAssets(params, fileName) {
           }
           console.log('发布成功');
         }
-        return resolve(body);
+        resolve(body);
       } catch (error) {
         debugLog(body);
         reject(error);
       }
-      return;
     });
   });
 }
