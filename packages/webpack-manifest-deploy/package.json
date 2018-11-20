@@ -1,6 +1,6 @@
 {
   "name": "@x-scaffold/webpack-manifest-deploy",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "用于manifest.json的构建",
   "main": "index.js",
   "scripts": {

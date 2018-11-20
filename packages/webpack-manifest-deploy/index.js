@@ -9,13 +9,13 @@ const pkg = require('./package.json');
 
 const debugLog = debug(pkg.name);
 
-let projectEnv = process.env.DEPLOY_ENV || 'test';
+const projectEnv = process.env.DEPLOY_ENV || 'test';
 // 预发环境test2 测试环境test 线上环境production
-const PROJECT_ENV_LIST = ['test', 'test2', 'production'];
+// const PROJECT_ENV_LIST = ['test', 'test2', 'production'];
 
-if (PROJECT_ENV_LIST.indexOf(projectEnv) < 0) {
-  projectEnv = 'test';
-}
+// if (PROJECT_ENV_LIST.indexOf(projectEnv) < 0) {
+//   projectEnv = 'test';
+// }
 
 const message = dateFormat(git.date(), 'yyyy-mm-dd HH:MM:ss') + ' ' + git.message();
 
@@ -30,7 +30,9 @@ function requestAssets(params, fileName) {
   const form = Object.assign(defaultForm, params);
   form.token = configDeploy.get('webpack-manifest-deploy.token');
   form.module = configDeploy.get('webpack-manifest-deploy.module');
-  form.env = projectEnv;
+  if (!form.env) {
+    form.env = projectEnv;
+  }
   form._gitlog = git.long(process.cwd());
   const apiRequestUrl = configDeploy.get('webpack-manifest-deploy.apiRequestUrl');
 
@@ -56,7 +58,7 @@ function requestAssets(params, fileName) {
           if (fileName) {
             fse.outputJsonSync(fileName, form, { spaces: 2 });
           }
-          console.log('发布成功');
+          console.log('%s发布成功', apiRequestUrl);
         }
         resolve(body);
       } catch (error) {
