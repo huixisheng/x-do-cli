@@ -13,8 +13,8 @@ const eTag = require('../lib/qiniu/etag');
 const logger = require('../lib/log');
 
 
-const qiniuConfig = Object.assign(xConfig.qiniuConfig, xConfig.qiniuStatic);
-const qnClient  = qn.create(qiniuConfig);
+const qiniuConfig = Object.assign(xConfig.qiniuConfig);
+const qnClient = qn.create(qiniuConfig);
 
 const ROOT_PATH = process.cwd();
 
@@ -49,7 +49,10 @@ const promises = uploadFiles.map((file) => {
 });
 Promise.all(promises).then((result) => {
   console.log('上传的文件: ');
-  console.log(result);
+  result.forEach((item) => {
+    console.log(item.url);
+  });
+  // console.log(result);
   clipboardy.writeSync(JSON.stringify(result));
 }).catch(() => {
 

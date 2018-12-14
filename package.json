@@ -56,6 +56,7 @@
     "node-plus-string": "^1.0.1",
     "nunjucks": "^3.0.1",
     "ora": "^3.0.0",
+    "pack-qiniu": "^1.0.1",
     "qn": "^1.3.0",
     "request": "^2.82.0",
     "semver": "^5.4.1",
@@ -67,7 +68,7 @@
     "vue2mina": "^0.2.0",
     "walk-sync": "^0.3.2",
     "watch": "^1.0.2",
-    "x-config-deploy": "0.0.3"
+    "x-config-deploy": "0.0.6"
   },
   "husky": {
     "hooks": {
