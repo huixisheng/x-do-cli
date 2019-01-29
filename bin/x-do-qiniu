@@ -12,7 +12,8 @@ const clipboardy = require('clipboardy');
 const eTag = require('../lib/qiniu/etag');
 const logger = require('../lib/log');
 
-
+// TODO: 删除后插入
+// TODO: 自定义配置
 const qiniuConfig = Object.assign(xConfig.qiniuConfig);
 const qnClient = qn.create(qiniuConfig);
 
@@ -50,7 +51,7 @@ const promises = uploadFiles.map((file) => {
 Promise.all(promises).then((result) => {
   console.log('上传的文件: ');
   result.forEach((item) => {
-    console.log(item.url);
+    console.log(item['x:filename'], item.url);
   });
   // console.log(result);
   clipboardy.writeSync(JSON.stringify(result));

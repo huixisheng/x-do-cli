@@ -10,4 +10,5 @@ commander
   .command('qiniu', '上传图片到七牛')
   .command('component', '创建Vue组件')
   .command('vue2wepy', 'vue文件转wepy')
+  .command('rem', '生成前端需要的文件')
   .parse(process.argv);

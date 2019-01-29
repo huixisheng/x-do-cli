@@ -1,0 +1,86 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+const path = require('path');
+const fs = require('fs');
+const util = require('util');
+const fse = require('fs-extra');
+const log = require('debug')('x-do-rem');
+const packQiniu = require('../packages/pack-qiniu');
+const logger = require('../lib/log');
+const { getFileList } = require('../utils/index');
+
+const ROOT_PATH = process.cwd();
+
+program.on('--help', function () {
+  console.log(' Examples:');
+  console.log();
+  console.log('    $ x-do-rem sourcefile distfile');
+});
+
+
+program
+  .option('-r, --root <n>', 'rem的基准值(64|75)。默认75', parseInt)
+  .option('-o, --output [value]', '前端转换资源路径')
+  .parse(process.argv);
+
+
+if (!program.args.length) {
+  logger.error('请输入要处理的前端资源文件或者路径');
+  program.help();
+  process.exit(1);
+}
+
+const files = getFileList(program.args);
+const outputPath = program.output;
+const rootValue = program.root || 75;
+
+log('process.argv', process.argv);
+log('program.argv', program);
+log('files', files);
+
+async function uploadFiles() {
+  const uploadList = [];
+  // eslint-disable-next-line
+  for (const file of files) {
+    const uploadResult = await packQiniu(file);
+    uploadList.push(uploadResult);
+  }
+  return uploadList;
+}
+
+async function main() {
+  const uploadList = await uploadFiles();
+  const cssRemPathFile = path.join(outputPath, 'image-rem.css');
+  const jsPathFile = path.join(outputPath, 'resource.js');
+  let content = '';
+  // TODO: 提取bg-size
+  const remCssRow = '.%s{ width: %srem; height:%srem; background-image: url(%s); background-size: cover; }';
+  const resourcesJs = [];
+  uploadList.forEach((item) => {
+    const basename = path.basename(item.name, path.extname(item.name));
+
+    content = content + util.format(remCssRow, basename, item.width / rootValue, item.height / rootValue, item.url) + '\n';
+    resourcesJs.push(item.url);
+  });
+  fse.outputFile(cssRemPathFile, content, (error) => {
+    if (error) {
+      console.log(error);
+      return;
+    }
+    // TODO: 高亮
+    console.log('%s生成成功', cssRemPathFile);
+  });
+
+  const contentJs =  `module.exports = ${JSON.stringify(resourcesJs, null, 2)}`;
+  fse.outputFile(jsPathFile, contentJs, (error) => {
+    if (error) {
+      console.log(error);
+      return;
+    }
+    // TODO: 高亮
+    console.log('%s生成成功', jsPathFile);
+  });
+}
+
+main();
