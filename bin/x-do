@@ -5,10 +5,11 @@ const commander = require('commander');
 commander
   .version(require('../package').version)
   .usage('<command> [options]')
-  .command('view', '创建入口的view模板')
+  .command('component', '创建Vue组件')
   .command('page', '创建多入口页面模板')
   .command('qiniu', '上传图片到七牛')
-  .command('component', '创建Vue组件')
+  .command('rem', '根据目录的图片列表生成前端需要的文件')
+  .command('snippet', '添加相关snippet')
+  .command('view', '创建入口的view模板并生成相关的约定路由')
   .command('vue2wepy', 'vue文件转wepy')
-  .command('rem', '生成前端需要的文件')
   .parse(process.argv);
